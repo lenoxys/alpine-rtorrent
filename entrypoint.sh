@@ -28,13 +28,6 @@ RUNTIME_RC="/home/rtorrent/rtorrent/config.d/99-runtime.rc"
 if [ "$RT_LOG_LEVEL" = "debug" ]; then
     cat > "$RUNTIME_RC" <<'EOF'
 log.add_output = "debug", "log"
-log.add_output = "dht_debug", "log"
-log.add_output = "peer_debug", "log"
-log.add_output = "socket_debug", "log"
-log.add_output = "storage_debug", "log"
-log.add_output = "tracker_debug", "log"
-log.add_output = "torrent_debug", "log"
-log.add_output = "rpc_debug", "log"
 EOF
 else
     rm -f "$RUNTIME_RC"
