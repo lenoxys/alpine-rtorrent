@@ -22,5 +22,8 @@ fi
 chown -R rtorrent:rtorrent /home/rtorrent/
 chown rtorrent:rtorrent /completed_downloads/
 
+# Ensure rtorrent can write to container stdout for logging
+chmod 0666 /proc/self/fd/1 2>/dev/null || true
+
 # Drop privileges and start rtorrent
 exec su-exec rtorrent rtorrent
