@@ -2,7 +2,7 @@ FROM alpine:3.23
 
 ARG VERSION="0.16.2-r1"
 
-LABEL maintainer="Gianluca Gabrielli" mail="tuxmealux+dockerhub@protonmail.com"
+LABEL maintainer="Lenoxys" mail="alpine-rtorrent@uni.bzh"
 LABEL description="rTorrent on Alpine Linux, with a better Docker integration."
 LABEL website="https://github.com/lenoxys/alpine-rtorrent"
 LABEL version="$VERSION"
