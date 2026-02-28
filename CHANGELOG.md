@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.3
+
+- Fix healthcheck: use TCP port check (`nc -z`) instead of HTTP on SCGI socket
+
 ## 0.0.2
 
 - Fix `/dev/stdout` logging after privilege drop via `su-exec`
