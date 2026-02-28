@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.5
+
+- Fix debug logging: remove invalid subsystem log names for rtorrent 0.16.x
+
 ## 0.0.4
 
 - Add `RT_LOG_LEVEL=debug` env var for runtime debug logging
