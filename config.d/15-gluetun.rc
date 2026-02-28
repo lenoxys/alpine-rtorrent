@@ -1,0 +1,13 @@
+## Gluetun VPN port forwarding integration
+## Reads the forwarded port from Gluetun and updates rtorrent's listening port.
+## Safe to include even without Gluetun — silently does nothing if the file is absent.
+##
+## Requires: -v /tmp/gluetun:/tmp/gluetun:ro (or running in Gluetun's network namespace)
+
+network.port_random.set = 0
+
+method.insert = update_port, simple, \
+    "execute.nothrow = sh, -c, \"port=$(cat /tmp/gluetun/forwarded_port 2>/dev/null); \
+    [ -n \\\"$port\\\" ] && network.port_range.set=$port-$port\""
+
+schedule2 = port_update, 30, 30, ((update_port))
