@@ -30,6 +30,6 @@ EXPOSE 6881/udp
 EXPOSE 50000
 
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
-    CMD wget -q --spider http://127.0.0.1:16891 || exit 1
+    CMD nc -z 127.0.0.1 16891
 
 ENTRYPOINT ["/home/rtorrent/entrypoint.sh"]
