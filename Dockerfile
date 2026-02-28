@@ -1,33 +1,27 @@
-FROM alpine:edge
+FROM alpine:3.23
 
-ARG VERSION="0.15.2-r0"
-ARG UGID=1000
+ARG VERSION="0.16.2-r1"
 
 LABEL maintainer="Gianluca Gabrielli" mail="tuxmealux+dockerhub@protonmail.com"
 LABEL description="rTorrent on Alpine Linux, with a better Docker integration."
-LABEL website="https://github.com/TuxMeaLux/alpine-rtorrent"
+LABEL website="https://github.com/lenoxys/alpine-rtorrent"
 LABEL version="$VERSION"
 
-RUN addgroup --gid $UGID rtorrent && \
-    adduser -S -u $UGID -G rtorrent rtorrent && \
-    apk add --no-cache rtorrent="$VERSION" && \
-    mkdir -p /home/rtorrent/.rtorrent/config.d/ && \
-    mkdir -p /home/rtorrent/.rtorrent/.session/ && \
-    mkdir -p /home/rtorrent/.rtorrent/downloads/ && \
-    mkdir -p /home/rtorrent/.rtorrent/watch/ && \
-    chown -R rtorrent:rtorrent /home/rtorrent/.rtorrent/ && \
-    cp -r /home/rtorrent/.rtorrent/ /home/rtorrent/rtorrent/
+RUN addgroup --gid 568 rtorrent && \
+    adduser -S -u 568 -G rtorrent rtorrent && \
+    apk add --no-cache rtorrent="$VERSION" su-exec && \
+    mkdir -p /home/rtorrent/.rtorrent/config.d/ \
+             /home/rtorrent/.rtorrent/.session/ \
+             /home/rtorrent/.rtorrent/watch/ \
+             /home/rtorrent/rtorrent/config.d/ \
+             /home/rtorrent/rtorrent/.session/ \
+             /home/rtorrent/rtorrent/watch/ \
+             /completed_downloads/ && \
+    chown -R rtorrent:rtorrent /home/rtorrent/
 
-COPY --chown=rtorrent:rtorrent config.d/ /home/rtorrent/.rtorrent/config.d/
-COPY --chown=rtorrent:rtorrent .rtorrent.rc /home/rtorrent/
-COPY --chown=rtorrent:rtorrent entrypoint.sh /home/rtorrent/entrypoint.sh
-
-RUN rm -rf /home/rtorrent/rtorrent/config.d/ && \
-    cp -r /home/rtorrent/.rtorrent/config.d/ /home/rtorrent/rtorrent/config.d/ && \
-    chown -R rtorrent:rtorrent /home/rtorrent/rtorrent/
-
-VOLUME /home/rtorrent/rtorrent/.session
-
+COPY config.d/ /home/rtorrent/.rtorrent/config.d/
+COPY .rtorrent.rc /home/rtorrent/
+COPY entrypoint.sh /home/rtorrent/entrypoint.sh
 RUN chmod +x /home/rtorrent/entrypoint.sh
 
 EXPOSE 16891
@@ -35,6 +29,7 @@ EXPOSE 6881
 EXPOSE 6881/udp
 EXPOSE 50000
 
-USER rtorrent
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+    CMD wget -q --spider http://127.0.0.1:16891 || exit 1
 
-CMD ["/home/rtorrent/entrypoint.sh"]
+ENTRYPOINT ["/home/rtorrent/entrypoint.sh"]
