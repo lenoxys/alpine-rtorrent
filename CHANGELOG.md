@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.4
+
+- Add `RT_LOG_LEVEL=debug` env var for runtime debug logging
+
 ## 0.0.3
 
 - Fix healthcheck: use TCP port check (`nc -z`) instead of HTTP on SCGI socket
