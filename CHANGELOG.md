@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.2
+
+- Fix `/dev/stdout` logging after privilege drop via `su-exec`
+
 ## 0.0.1
 
 First release — rebuilt for TrueNAS Scale with VPN support.
